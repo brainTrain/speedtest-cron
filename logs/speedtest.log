@@ -2455,3 +2455,19 @@ Ping: 20.705 ms
 Download: 25.18 Mbit/s
 Upload: 4.98 Mbit/s
 -----
+2016-10-23T23:45:00-0700
+1477291500287575000
+Ping: 19.57 ms
+Download: 19.01 Mbit/s
+Upload: 5.42 Mbit/s
+-----
+2016-10-23T23:45:57-0700
+1477291557702979000
+Ping: 18.949 ms
+Download: 25.82 Mbit/s
+Upload: 5.23 Mbit/s
+-----
+2016-10-23T23:48:43-0700
+1477291723874181000
+Could not retrieve speedtest.net configuration: <urlopen error timed out>
+-----
