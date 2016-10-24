@@ -15,10 +15,9 @@ byTimestampArray.forEach(function(item) {
     // only let pristine data get in for now
     // NOTE: item.length < 5 means ping failed, item.length > 5 means computer turned off and didn't print delimeter
     // TODO: handle case where item.length > 5 and rescue ping that's run
-    if (item.length === 5) {
-        blobArray.push(buildBlob(item));
-    }
+    if (item.length === 5) blobArray.push(buildBlob(item));
 
+    // build metadata
     if (item.length > 5) unparsedPingCount ++;
 });
 
