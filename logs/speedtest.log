@@ -2474,3 +2474,9 @@ Could not retrieve speedtest.net configuration: <urlopen error timed out>
 1477291815332873000
 Ping: 19.357 ms
 -----
+2016-10-23T23:50:45-0700
+1477291845669949000
+Ping: 19.029 ms
+Download: 24.32 Mbit/s
+Upload: 4.83 Mbit/s
+-----
