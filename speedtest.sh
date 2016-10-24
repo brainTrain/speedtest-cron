@@ -9,7 +9,7 @@ $BIN/gdate +%s%N >> $LOG_PATH
 $BIN/speedtest --simple >> $LOG_PATH
 echo "-----" >> $LOG_PATH
 
-node parse.js
+#$BASEDIR/ node parse.js
 
-git commit $BASEDIR/logs/*  -m "programmatic commit"
-git push origin master
+#git --git-dir=$BASEDIR/.git commit $BASEDIR/logs/*  -m "programmatic commit"
+#git --git-dir=$BASEDIR/.git push origin master
