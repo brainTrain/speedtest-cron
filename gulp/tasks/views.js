@@ -29,7 +29,7 @@ gulp.task('views', () => {
         //.pipe(revReplace({manifest: cssManifest}))
         .pipe(cdnizer({
             files: config.cdn.files,
-            defaultCDNBase: `/norcaltrimmers/${config.cdn.prodBaseUrl}`
+            defaultCDNBase: `${config.cdn.prodBaseUrl}`
         }))
         .pipe(gulp.dest(config.views.prodDest));
 });

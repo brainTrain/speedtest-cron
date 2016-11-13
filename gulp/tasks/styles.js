@@ -24,7 +24,7 @@ gulp.task('styles', () => {
         .pipe(autoprefixer('last 2 versions', '> 1%', 'ie 8'))
         .pipe(cdnizer({
             files: config.cdn.imageFiles,
-            defaultCDNBase: `/norcaltrimmers/${config.cdn.prodBaseUrl}`
+            defaultCDNBase: `${config.cdn.prodBaseUrl}`
         }))
         //.pipe(rev())
         //.pipe(rev.manifest())

@@ -50,7 +50,7 @@ export default {
         }
     },
     cdn: {
-        prodBaseUrl: 'public',
+        prodBaseUrl: '/speed-test/public',
         devBaseUrl: '',
         files: [
             '/js/*.js',
