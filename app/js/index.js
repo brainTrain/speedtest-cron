@@ -19,14 +19,20 @@ function tableHeaderParser(order) {
     return order.map((data) => { return data.title; });
 }
 
-function tableBodyParser(response, order) {
+function tableBodyParser(response, order, sortOrder='ascending') {
     const sortQuery = order[2].query;
     response.sort((a, b) => {
         const aValue = parseFloat(_.get(a, sortQuery));
         const bValue = parseFloat(_.get(b, sortQuery));
-        if(aValue > bValue) return 1;
-        if(bValue > aValue) return -1;
 
+        if(sortOrder === 'ascending') {
+            if(aValue > bValue) return 1;
+            if(bValue > aValue) return -1;
+        }
+        if(sortOrder === 'descending') {
+            if(aValue < bValue) return 1;
+            if(bValue < aValue) return -1;
+        }
         return 0;
     });
     return response.map((row) => {
@@ -64,7 +70,7 @@ function renderTable(response) {
     const tableHeaderData = tableHeaderParser(order)
     const tableHeader = renderTableHeader(tableHeaderData);
 
-    const tableBodyData = tableBodyParser(responseData, order);
+    const tableBodyData = tableBodyParser(responseData, order, 'ascending');
     const tableBody = renderTableBody(tableBodyData);
 
     const table = document.getElementById('data-table');
