@@ -1,3 +1,4 @@
+import _ from 'lodash';
 import myAjax from './my-ajax';
 
 myAjax(handleRequest, 'logs/speedtest.json', 'GET');
@@ -14,31 +15,53 @@ function handleRequest(http) {
     }
 }
 
-function tableHeaderParser(response) {
-    // only take first data object to get keys for header
-    const data = response[0].data;
-    return ['time', ...Object.keys(data)];
+function tableHeaderParser(order) {
+    return order.map((data) => { return data.title; });
 }
 
 function tableBodyParser(response, order) {
     return response.map((row) => {
-        return [row.date.iso, row.data.ping, row.data.download, row.data.upload];
+        // throw out rows that are incomplete
+        if(Object.keys(row.data).length ===  order.length - 1) {
+            return order.map((item) => {
+                const itemContent = _.get(row, item.query);
+                if(itemContent) return itemContent;
+            });
+        }
     });
 }
 
 function renderTable(response) {
     const responseData = JSON.parse(response);
-    console.log(responseData); 
+    const order = [
+        {
+            title: 'Time',
+            query: ['date', 'iso']
+        },
+        {
+            title: 'Ping',
+            query: ['data', 'ping']
+        },
+        {
+            title: 'Download',
+            query: ['data', 'download']
+        },
+        {
+            title: 'Upload',
+            query: ['data', 'upload']
+        }
+    ];
 
-    const tableHeaderData = tableHeaderParser(responseData)
+    const tableHeaderData = tableHeaderParser(order)
     const tableHeader = renderTableHeader(tableHeaderData);
 
-    const tableBodyData = tableBodyParser(responseData);
+    const tableBodyData = tableBodyParser(responseData, order);
     const tableBody = renderTableBody(tableBodyData);
 
     const table = document.getElementById('data-table');
     table.innerHTML = `${ tableHeader }${ tableBody }`;
 }
+
 // Table Header
 function renderTableHeader(content=[]) {
     const tableHeaderCells = content.map((data) => { return renderTableHeaderCell(data); }).join('');
@@ -63,6 +86,7 @@ function renderTableBody(content=[]) {
 
 function renderTableRow(content=[]) {
     const tableCells = content.map((data) => { return renderTableCell(data); }).join('');
+    
     return `<tr>${ tableCells }</tr>`;
 }
 
