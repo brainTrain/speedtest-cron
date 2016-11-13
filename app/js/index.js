@@ -20,6 +20,15 @@ function tableHeaderParser(order) {
 }
 
 function tableBodyParser(response, order) {
+    const sortQuery = order[2].query;
+    response.sort((a, b) => {
+        const aValue = parseFloat(_.get(a, sortQuery));
+        const bValue = parseFloat(_.get(b, sortQuery));
+        if(aValue > bValue) return 1;
+        if(bValue > aValue) return -1;
+
+        return 0;
+    });
     return response.map((row) => {
         // throw out rows that are incomplete
         if(Object.keys(row.data).length ===  order.length - 1) {
