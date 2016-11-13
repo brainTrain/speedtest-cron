@@ -5,7 +5,31 @@ myAjax(handleRequest, 'logs/speedtest.json', 'GET');
 
 function handleRequest(http) {
     if (http.status == 200) {
-        renderTable(http.response)
+        const order = [
+            {
+                title: 'Time',
+                query: ['date', 'iso'],
+                sortQuery: ['date', 'epoch']
+            },
+            {
+                title: 'Ping',
+                query: ['data', 'ping']
+            },
+            {
+                title: 'Download',
+                query: ['data', 'download']
+            },
+            {
+                title: 'Upload',
+                query: ['data', 'upload']
+            }
+        ];
+        const sortConfig = {
+            type: 'ascending',
+            index: 2
+        };
+        renderSortConfig(order, sortConfig);
+        renderTable(http.response, order, sortConfig);
     }
     else if (http.status == 400) {
         console.log('aww :(');
@@ -15,22 +39,31 @@ function handleRequest(http) {
     }
 }
 
-function sortData(response, order, sortOrder='ascending') {
-    const sortQuery = order[2].query;
+function sortData(response, order, sortConfig={type: 'ascending', index: 0}) {
+    // favor sort query if it exists
+    const sortQuery = order[sortConfig.index].sortQuery || order[sortConfig.index].query;
     return response.sort((a, b) => {
         const aValue = parseFloat(_.get(a, sortQuery));
         const bValue = parseFloat(_.get(b, sortQuery));
 
-        if(sortOrder === 'ascending') {
+        if(sortConfig.type === 'ascending') {
             if(aValue > bValue) return 1;
             if(bValue > aValue) return -1;
         }
-        if(sortOrder === 'descending') {
+        if(sortConfig.type === 'descending') {
             if(aValue < bValue) return 1;
             if(bValue < aValue) return -1;
         }
         return 0;
     });
+}
+
+function renderSortConfig(order, sortConfig) {
+    const orderTitle = order[sortConfig.index].title;
+    const sortType = sortConfig.type;
+
+    const sortConfigElement = document.getElementById('table-sort-config');
+    sortConfigElement.innerHTML = `Sorty By: ${ orderTitle } | ${ sortType }`;
 }
 
 function tableHeaderParser(order) {
@@ -49,26 +82,8 @@ function tableBodyParser(response, order) {
     });
 }
 
-function renderTable(response) {
-    const order = [
-        {
-            title: 'Time',
-            query: ['date', 'iso']
-        },
-        {
-            title: 'Ping',
-            query: ['data', 'ping']
-        },
-        {
-            title: 'Download',
-            query: ['data', 'download']
-        },
-        {
-            title: 'Upload',
-            query: ['data', 'upload']
-        }
-    ];
-    const responseData = sortData(JSON.parse(response), order, 'ascending');
+function renderTable(response, order, sortConfig) {
+    const responseData = sortData(JSON.parse(response), order, sortConfig);
 
     const tableHeaderData = tableHeaderParser(order)
     const tableHeader = renderTableHeader(tableHeaderData);
@@ -76,8 +91,8 @@ function renderTable(response) {
     const tableBodyData = tableBodyParser(responseData, order);
     const tableBody = renderTableBody(tableBodyData);
 
-    const table = document.getElementById('data-table');
-    table.innerHTML = `${ tableHeader }${ tableBody }`;
+    const tableElement = document.getElementById('data-table');
+    tableElement.innerHTML = `${ tableHeader }${ tableBody }`;
 }
 
 // Table Header
