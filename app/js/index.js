@@ -15,13 +15,9 @@ function handleRequest(http) {
     }
 }
 
-function tableHeaderParser(order) {
-    return order.map((data) => { return data.title; });
-}
-
-function tableBodyParser(response, order, sortOrder='ascending') {
+function sortData(response, order, sortOrder='ascending') {
     const sortQuery = order[2].query;
-    response.sort((a, b) => {
+    return response.sort((a, b) => {
         const aValue = parseFloat(_.get(a, sortQuery));
         const bValue = parseFloat(_.get(b, sortQuery));
 
@@ -35,6 +31,13 @@ function tableBodyParser(response, order, sortOrder='ascending') {
         }
         return 0;
     });
+}
+
+function tableHeaderParser(order) {
+    return order.map((data) => { return data.title; });
+}
+
+function tableBodyParser(response, order) {
     return response.map((row) => {
         // throw out rows that are incomplete
         if(Object.keys(row.data).length ===  order.length - 1) {
@@ -47,7 +50,6 @@ function tableBodyParser(response, order, sortOrder='ascending') {
 }
 
 function renderTable(response) {
-    const responseData = JSON.parse(response);
     const order = [
         {
             title: 'Time',
@@ -66,11 +68,12 @@ function renderTable(response) {
             query: ['data', 'upload']
         }
     ];
+    const responseData = sortData(JSON.parse(response), order, 'ascending');
 
     const tableHeaderData = tableHeaderParser(order)
     const tableHeader = renderTableHeader(tableHeaderData);
 
-    const tableBodyData = tableBodyParser(responseData, order, 'ascending');
+    const tableBodyData = tableBodyParser(responseData, order);
     const tableBody = renderTableBody(tableBodyData);
 
     const table = document.getElementById('data-table');
