@@ -12,7 +12,7 @@ export default {
     },
     styles: {
         watch: 'app/scss/**/*.scss',
-        src: 'app/scss/norcaltrimmers.scss',
+        src: 'app/scss/index.scss',
         devDest: 'dev/css',
         prodDest: 'public/css'
     },
