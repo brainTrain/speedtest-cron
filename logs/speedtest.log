@@ -3226,3 +3226,67 @@ Ping: 19.62 ms
 Download: 20.16 Mbit/s
 Upload: 5.18 Mbit/s
 -----
+2016-11-13T17:02:35-0800
+1479085355094162000
+Ping: 18.018 ms
+Download: 21.53 Mbit/s
+Upload: 5.61 Mbit/s
+-----
+2016-11-13T18:01:25-0800
+1479088885171500000
+Could not retrieve speedtest.net configuration: <urlopen error [Errno 8] nodename nor servname provided, or not known>
+-----
+2016-11-13T20:00:00-0800
+1479096000971916000
+Ping: 128.185 ms
+Download: 3.16 Mbit/s
+Upload: 4.26 Mbit/s
+-----
+2016-11-13T20:15:00-0800
+1479096900446377000
+Ping: 20.496 ms
+Download: 20.81 Mbit/s
+Upload: 5.39 Mbit/s
+-----
+2016-11-13T20:30:00-0800
+1479097800788509000
+Ping: 72.406 ms
+Download: 21.61 Mbit/s
+Upload: 5.55 Mbit/s
+-----
+2016-11-13T20:45:00-0800
+1479098700226305000
+Ping: 31.238 ms
+Download: 13.75 Mbit/s
+Upload: 5.78 Mbit/s
+-----
+2016-11-13T21:00:00-0800
+1479099600328702000
+Ping: 17.083 ms
+Download: 15.19 Mbit/s
+Upload: 5.39 Mbit/s
+-----
+2016-11-13T21:30:00-0800
+1479101400484195000
+Ping: 26.082 ms
+Download: 24.52 Mbit/s
+Upload: 5.63 Mbit/s
+-----
+2016-11-13T21:45:00-0800
+1479102300853815000
+Ping: 23.939 ms
+Download: 20.22 Mbit/s
+Upload: 4.88 Mbit/s
+-----
+2016-11-13T22:00:00-0800
+1479103200917917000
+Ping: 23.484 ms
+Download: 22.01 Mbit/s
+Upload: 5.20 Mbit/s
+-----
+2016-11-14T01:00:00-0800
+1479114000642620000
+Ping: 20.997 ms
+Download: 29.50 Mbit/s
+Upload: 4.47 Mbit/s
+-----
