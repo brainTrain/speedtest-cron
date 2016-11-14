@@ -1,0 +1,21 @@
+// vars
+$black: #333;
+
+
+// styles
+.page-container {
+    margin: 0 80px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    border-bottom: 1px solid $black;
+}
+
+th {
+    text-align: left;
+}
