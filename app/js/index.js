@@ -8,19 +8,23 @@ function handleRequest(http) {
         const order = [
             {
                 title: 'Time',
+                type: 'time',
                 query: ['date', 'iso'],
                 sortQuery: ['date', 'epoch']
             },
             {
                 title: 'Ping',
+                type: 'ping',
                 query: ['data', 'ping']
             },
             {
                 title: 'Download',
+                type: 'download',
                 query: ['data', 'download']
             },
             {
                 title: 'Upload',
+                type: 'upload',
                 query: ['data', 'upload']
             }
         ];
@@ -30,11 +34,9 @@ function handleRequest(http) {
         };
         renderSortConfig(order, sortConfig);
         renderTable(http.response, order, sortConfig);
-    }
-    else if (http.status == 400) {
+    } else if (http.status == 400) {
         console.log('aww :(');
-    }
-    else {
+    } else {
         console.log('wtf?? >:(');
     }
 }
@@ -66,10 +68,6 @@ function renderSortConfig(order, sortConfig) {
     sortConfigElement.innerHTML = `Sorty By: ${ orderTitle } | ${ sortType }`;
 }
 
-function tableHeaderParser(order) {
-    return order.map((data) => { return data.title; });
-}
-
 function tableBodyParser(response, order) {
     return response.map((row) => {
         // throw out rows that are incomplete
@@ -85,8 +83,7 @@ function tableBodyParser(response, order) {
 function renderTable(response, order, sortConfig) {
     const responseData = sortData(JSON.parse(response), order, sortConfig);
 
-    const tableHeaderData = tableHeaderParser(order)
-    const tableHeader = renderTableHeader(tableHeaderData);
+    const tableHeader = renderTableHeader(order);
 
     const tableBodyData = tableBodyParser(responseData, order);
     const tableBody = renderTableBody(tableBodyData);
@@ -105,8 +102,10 @@ function renderTableHeader(content=[]) {
     `;
 }
 
-function renderTableHeaderCell(content='Header Cell') {
-    return `<th>${ content }</th>`;
+function renderTableHeaderCell(content={title: 'Header Cell', type: 'nope'}) {
+    const title = content.title;
+    const type = content.type;
+    return `<th data-type="${ type }">${ title }</th>`;
 }
 
 // Table Body
