@@ -12,7 +12,7 @@ import uglify from 'gulp-uglify';
 gulp.task('scripts', () => {
     // Grabs the app.js file
     return browserify(config.scripts.src)
-        .transform(babelify)
+        .transform(babelify, {presets: ['es2015', 'react']})
         // bundles it and creates a file called main.js
         .bundle()
         .pipe(source('main.js'))
