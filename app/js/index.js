@@ -3,42 +3,79 @@ import myAjax from './my-ajax';
 
 myAjax(handleRequest, 'logs/speedtest.json', 'GET');
 
+const dataz = {};
+const sortConfig = {
+    type: 'ascending',
+    index: 2
+};
+
 function handleRequest(http) {
     if (http.status == 200) {
-        const order = [
-            {
-                title: 'Time',
-                type: 'time',
-                query: ['date', 'iso'],
-                sortQuery: ['date', 'epoch']
-            },
-            {
-                title: 'Ping',
-                type: 'ping',
-                query: ['data', 'ping']
-            },
-            {
-                title: 'Download',
-                type: 'download',
-                query: ['data', 'download']
-            },
-            {
-                title: 'Upload',
-                type: 'upload',
-                query: ['data', 'upload']
-            }
-        ];
-        const sortConfig = {
-            type: 'ascending',
-            index: 2
-        };
-        renderSortConfig(order, sortConfig);
-        renderTable(http.response, order, sortConfig);
+        dataz.response = http.response;
+        renderElements();
     } else if (http.status == 400) {
         console.log('aww :(');
     } else {
         console.log('wtf?? >:(');
     }
+}
+
+function renderElements() {
+    const order = [
+        {
+            title: 'Time',
+            type: 'time',
+            query: ['date', 'iso'],
+            sortQuery: ['date', 'epoch']
+        },
+        {
+            title: 'Ping',
+            type: 'ping',
+            query: ['data', 'ping']
+        },
+        {
+            title: 'Download',
+            type: 'download',
+            query: ['data', 'download']
+        },
+        {
+            title: 'Upload',
+            type: 'upload',
+            query: ['data', 'upload']
+        }
+    ];
+    renderSortConfig(order, sortConfig);
+    renderTable(dataz.response, order, sortConfig);
+    bindEventHandlers();
+}
+
+function bindEventHandlers() {
+    clickSort('.sort-control');
+}
+
+function clickSort(selector) {
+    let elements = document.querySelectorAll(selector);
+    for(let i = 0; i < elements.length; i++) {
+        let element = elements[i];
+        element.addEventListener('touchstart', sortItems, false);
+        element.addEventListener('click', sortItems, false);
+    }
+}
+
+function sortItems() {
+    let index = this.dataset.index;
+    if(sortConfig.index === index) {
+        if(sortConfig.type === 'ascending') {
+            sortConfig.type = 'descending';   
+        } else {
+            sortConfig.type = 'ascending';   
+        }
+    } else {
+        sortConfig.type = 'ascending';
+    }
+
+    sortConfig.index = index;
+    renderElements();
 }
 
 function sortData(response, order, sortConfig={type: 'ascending', index: 0}) {
@@ -94,7 +131,7 @@ function renderTable(response, order, sortConfig) {
 
 // Table Header
 function renderTableHeader(content=[]) {
-    const tableHeaderCells = content.map((data) => { return renderTableHeaderCell(data); }).join('');
+    const tableHeaderCells = content.map((data, index) => { return renderTableHeaderCell(data, index); }).join('');
     return `
         <thead>
             <tr>${ tableHeaderCells }</tr>
@@ -102,10 +139,9 @@ function renderTableHeader(content=[]) {
     `;
 }
 
-function renderTableHeaderCell(content={title: 'Header Cell', type: 'nope'}) {
+function renderTableHeaderCell(content={ title: 'Header Cell' }, index) {
     const title = content.title;
-    const type = content.type;
-    return `<th data-type="${ type }">${ title }</th>`;
+    return `<th class="sort-control" data-index="${ index }">${ title }</th>`;
 }
 
 // Table Body
